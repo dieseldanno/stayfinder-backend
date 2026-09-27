@@ -1,0 +1,26 @@
+[
+  {
+    "property_id": "property_1001",
+    "title": "Cozy Studio in Södermalm",
+    "description": "A bright, newly renovated studio a short walk from Slussen.",
+    "location": "Stockholm, Sweden",
+    "price_per_night": 850,
+    "max_guests": 2
+  },
+  {
+    "property_id": "property_1002",
+    "title": "Lakeside Cabin",
+    "description": "A quiet wooden cabin right by the water, perfect for a weekend away.",
+    "location": "Dalarna, Sweden",
+    "price_per_night": 1200,
+    "max_guests": 6
+  },
+  {
+    "property_id": "property_1003",
+    "title": "Modern Loft with City View",
+    "description": "Top-floor loft apartment with a rooftop terrace overlooking the city.",
+    "location": "Gothenburg, Sweden",
+    "price_per_night": 1450,
+    "max_guests": 4
+  }
+]

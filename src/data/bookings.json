@@ -1,0 +1,22 @@
+[
+  {
+    "booking_id": "booking_2001",
+    "property_id": "property_1001",
+    "guest_name": "Alex Andersson",
+    "guest_email": "alex@example.com",
+    "check_in": "2026-10-10",
+    "check_out": "2026-10-14",
+    "guests": 2,
+    "status": "confirmed"
+  },
+  {
+    "booking_id": "booking_2002",
+    "property_id": "property_1002",
+    "guest_name": "Sara Lind",
+    "guest_email": "sara@example.com",
+    "check_in": "2026-11-01",
+    "check_out": "2026-11-03",
+    "guests": 4,
+    "status": "pending"
+  }
+]
