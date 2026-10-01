@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { zValidator } from "@hono/zod-validator";
 
-const schema = z.object({
+const bookingSchema = z.object({
   property_id: z.string().min(1, "Property ID is required"),
   guest_name: z.string().min(1, "Guest name is required"),
   guest_email: z.string().email("Valid email is required"),
@@ -9,10 +9,10 @@ const schema = z.object({
   check_out: z.string().min(1, "Check-out date is required"),
   guests: z.number().int().positive("Guests must be greater than 0"),
   booking_id: z.string().optional(),
-  status: z.enum(["pending", "confirmed", "cancelled"]).optional()
+  status: z.enum(["pending", "confirmed", "cancelled"]).optional(),
 });
 
-const bookingValidator = zValidator("json", schema, (result, c) => {
+const bookingValidator = zValidator("json", bookingSchema, (result, c) => {
   if (!result.success) {
     return c.json({ errors: result.error.issues }, 400);
   }
