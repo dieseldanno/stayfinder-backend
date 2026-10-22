@@ -1,59 +1,79 @@
-import { supabase } from "../lib/supabase.js";
-import type { NewProperty, Property } from "../types/property.js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { NewProperty } from "../types/property.js";
+import type { PropertyQuery } from "../validators/propertyQueryValidator.js";
 
-export async function getProperties(): Promise<Property[]> {
-  const { data, error } = await supabase
-    .from("properties")
-    .select("*")
-    .order("created_at", { ascending: false });
+export async function getProperties(
+  supabase: SupabaseClient,
+  filters: PropertyQuery = { order: "asc" },
+) {
+  let query = supabase.from("properties").select("*");
 
-  if (error) throw new Error(error.message);
-  return data ?? [];
+  if (filters.city) {
+    query = query.ilike("city", `%${filters.city}%`);
+  }
+  if (filters.maxPrice) {
+    query = query.lte("price_per_night", filters.maxPrice);
+  }
+  if (filters.guests) {
+    query = query.gte("max_guests", filters.guests);
+  }
+  if (filters.sort === "price") {
+    query = query.order("price_per_night", {
+      ascending: filters.order === "asc",
+    });
+  }
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return data;
 }
 
-export async function getPropertyById(id: string): Promise<Property | null> {
+export async function getPropertyById(supabase: SupabaseClient, id: string) {
   const { data, error } = await supabase
     .from("properties")
     .select("*")
     .eq("id", id)
     .maybeSingle();
-
-  if (error) throw new Error(error.message);
+  if (error) throw error;
   return data;
 }
 
-export async function createProperty(property: NewProperty): Promise<Property> {
+export async function createProperty(
+  supabase: SupabaseClient,
+  property: NewProperty,
+) {
   const { data, error } = await supabase
     .from("properties")
     .insert(property)
     .select()
     .single();
-
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Property could not be created");
+  if (error) throw error;
   return data;
 }
 
 export async function updateProperty(
+  supabase: SupabaseClient,
   id: string,
-  property: NewProperty,
-): Promise<Property | null> {
+  property: Partial<NewProperty>,
+) {
   const { data, error } = await supabase
     .from("properties")
     .update(property)
     .eq("id", id)
     .select()
-    .maybeSingle();
-
-  if (error) throw new Error(error.message);
+    .single();
+  if (error) throw error;
   return data;
 }
 
-export async function deleteProperty(id: string): Promise<Property | null> {
-  const existingProperty = await getPropertyById(id);
-  if (!existingProperty) return null;
+export async function deleteProperty(supabase: SupabaseClient, id: string) {
+  const { data, error } = await supabase
+    .from("properties")
+    .delete()
+    .eq("id", id)
+    .select()
+    .single();
 
-  const { error } = await supabase.from("properties").delete().eq("id", id);
-  if (error) throw new Error(error.message);
-  return existingProperty;
+  if (error) throw error;
+  return data;
 }
