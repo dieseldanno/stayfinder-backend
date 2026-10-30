@@ -18,7 +18,6 @@ bookingApp.get("/", bookingQueryValidator, async (c) => {
     const bookings = await db.getBookings(supabase, filters);
     return c.json(bookings);
   } catch (error) {
-    console.error(error);
     return c.json({ error: "Failed to fetch bookings" }, 500);
   }
 });
