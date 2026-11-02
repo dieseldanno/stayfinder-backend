@@ -1,7 +1,7 @@
 {
   "name": "hono_project",
   "version": "1.0.0",
-  "description": "StayFinder API – Hono + TypeScript, properties & bookings (no database yet, JSON files as data source).",
+  "description": "StayFinder API – Hono + TypeScript, properties & bookings",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
