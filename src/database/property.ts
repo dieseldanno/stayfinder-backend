@@ -61,7 +61,7 @@ export async function updateProperty(
     .update(property)
     .eq("id", id)
     .select()
-    .single();
+    .maybeSingle();
   if (error) throw error;
   return data;
 }
