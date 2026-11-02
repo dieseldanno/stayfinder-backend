@@ -1,7 +1,6 @@
 ### ============================================================
 ### StayFinder API – testanrop (REST Client i VS Code)
-### Kör uppifrån och ned. Inloggningen hålls via cookie automatiskt.
-### Hemligheter ligger i .env (TEST_EMAIL, TEST_PASSWORD), aldrig här.
+### Hemligheter ligger i .env (TEST_EMAIL, TEST_PASSWORD)
 ### ============================================================
 
 @baseUrl = http://localhost:3000
