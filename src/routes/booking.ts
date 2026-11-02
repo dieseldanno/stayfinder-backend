@@ -5,6 +5,7 @@ import bookingParamValidator from "../validators/bookingParamValidator.js";
 import { requireAuth } from "../middleware/auth.js";
 import type { NewBooking } from "../types/booking.js";
 import bookingQueryValidator from "../validators/bookingQueryValidator.js";
+import { getPropertyById } from "../database/property.js";
 
 const bookingApp = new Hono();
 
@@ -17,7 +18,6 @@ bookingApp.get("/", bookingQueryValidator, async (c) => {
     const bookings = await db.getBookings(supabase, filters);
     return c.json(bookings);
   } catch (error) {
-    console.error(error);
     return c.json({ error: "Failed to fetch bookings" }, 500);
   }
 });
@@ -46,6 +46,20 @@ bookingApp.post("/", bookingValidator, async (c) => {
       return c.json({ error: "Check-out must be after check-in" }, 400);
     }
 
+    const property = await getPropertyById(supabase, newBooking.property_id);
+    if (!property) {
+      return c.json({ error: "Property not found" }, 404);
+    }
+
+    if (newBooking.guests > property.max_guests) {
+      return c.json(
+        {
+          error: `Too many guests. This property allows max ${property.max_guests}`,
+        },
+        400,
+      );
+    }
+
     const booking = await db.createBooking(supabase, newBooking);
     return c.json(booking, 201);
   } catch (error) {
@@ -61,6 +75,20 @@ bookingApp.put("/:id", bookingParamValidator, bookingValidator, async (c) => {
 
     if (new Date(body.check_out) <= new Date(body.check_in)) {
       return c.json({ error: "Check-out must be after check-in" }, 400);
+    }
+
+    const property = await getPropertyById(supabase, body.property_id);
+    if (!property) {
+      return c.json({ error: "Property not found" }, 404);
+    }
+
+    if (body.guests > property.max_guests) {
+      return c.json(
+        {
+          error: `Too many guests. This property allows max ${property.max_guests}`,
+        },
+        400,
+      );
     }
 
     const updatedBooking = await db.updateBooking(supabase, id, body);
