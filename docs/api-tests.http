@@ -1,7 +1,6 @@
 ### ============================================================
-### StayFinder API – testanrop (REST Client i VS Code)
-### Kör uppifrån och ned. Inloggningen hålls via cookie automatiskt.
-### Hemligheter ligger i .env (TEST_EMAIL, TEST_PASSWORD), aldrig här.
+### StayFinder API – testanrop 
+### Hemligheter ligger i .env (TEST_EMAIL, TEST_PASSWORD)
 ### ============================================================
 
 @baseUrl = http://localhost:3000
@@ -70,8 +69,8 @@ Content-Type: application/json
 ### G1. KONTO OCH INLOGGNING
 ### ============================================================
 
-### Skapa konto → 201 (ändra om din route svarar 200)
-### Skapar ett nytt konto per körning, eftersom adressen har tidsstämpel.
+### Skapa konto → 201
+# Skapar ett nytt konto per körning, eftersom adressen har tidsstämpel.
 POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
